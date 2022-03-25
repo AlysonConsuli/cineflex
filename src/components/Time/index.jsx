@@ -1,7 +1,7 @@
 import { MovieTime } from './style'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 
 export const Time = () => {
 
@@ -32,7 +32,14 @@ export const Time = () => {
                 return (
                     <div key={time.id}>
                         <span>{time.weekday} - {time.date}</span>
-                        {time.showtimes.map(num => <button key={num.id}>{num.name}</button>)}
+                        {time.showtimes.map(num => {
+                            return (
+                                <Link to={`/assentos/${num.id}`} key={num.id} >
+                                    <button>{num.name}</button>
+                                </Link>
+                            )
+                        })
+                        }
                     </div>
                 )
             })}

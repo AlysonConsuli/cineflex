@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Movies } from './components/Movies'
+import { Session } from './components/Session'
 import { Time } from './components/Time'
 import { GlobalStyle } from './style'
 
@@ -11,6 +12,7 @@ export const App = () => {
                 <Routes >
                     <Route path='/' element={<Movies />} />
                     <Route path='/sessoes/:movieId' element={<Time />} />
+                    <Route path='/assentos/:sessionId' element={<Session />} />
                 </Routes>
             </BrowserRouter>
         </>
