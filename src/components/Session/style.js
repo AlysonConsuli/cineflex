@@ -8,6 +8,12 @@ export const Seats = styled.div`
     }
 `
 
+export const Footer = styled.footer`
+    img{
+        width: 100px;
+    }
+`
+
 /*export const Circle = styled.div`
     width: 26px;
     height: 26px;
