@@ -4,20 +4,22 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { Seat } from "./Seat"
 
-export const Session = ({ callbackName, name, callbackCpf, cpf, fn1 }) => {
-    const [seats, setSeats] = useState([])
-    const [selecteds, setSelecteds] = useState([])
-    const [numberSelected, setNumberSelected] = useState([])
+export const Session = () => {
 
-    /*const [name, setName] = useState('')
-    const [cpf, setCpf] = useState('')*/
+    const [movie, setMovie] = useState({})
+    const { day, movie: infos, name: time, seats } = movie
 
-    const [infos, setInfos] = useState({})
-    const [weekday, setWeekday] = useState({})
-    const [time, setTime] = useState('')
+    const [user, setUser] = useState({
+        name: '',
+        cpf: ''
+    })
+    const { name, cpf } = user
 
-    console.log(selecteds)
-    console.log(numberSelected)
+    const [seatSelected, setSeatSelected] = useState({
+        seatsId: [],
+        seatsName: []
+    })
+    const { seatsId, seatsName } = seatSelected
 
     const { sessionId } = useParams()
 
@@ -26,11 +28,8 @@ export const Session = ({ callbackName, name, callbackCpf, cpf, fn1 }) => {
 
         promise.then(response => {
             const { data } = response
+            setMovie(data)
             console.log(data)
-            setSeats(data.seats)
-            setInfos(data.movie)
-            setWeekday(data.day)
-            setTime(data.name)
         })
         promise.catch(err => {
             console.log(err.response)
@@ -41,21 +40,42 @@ export const Session = ({ callbackName, name, callbackCpf, cpf, fn1 }) => {
 
     function finish(e) {
         e.preventDefault()
-        fn1(numberSelected)
 
-        /*const promise = axios.post('https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many',
+        if(seatsId.length === 0){
+            alert('Escolha algum assento')
+            return ''
+        }
+        if(cpf.length !== 11){
+            alert('Insira o cpf corretamente')
+            return ''
+        }
+
+        const promise = axios.post('https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many',
         {
-            ids: selecteds,
+            ids: seatsId,
             name: name,
             cpf: cpf
         })
         promise.then(response => console.log(response.data))
-        promise.catch(err => console.log(err.response))*/
+        promise.catch(err => console.log(err.response))
 
         navigate(
             '/sucesso',
-            { state: { infosTitle: infos.title} }
+            {
+                state: {
+                    title: infos.title,
+                    date: day.date,
+                    time: time,
+                    seats: seatsName,
+                    name: name,
+                    cpf: cpf
+                }
+            }
         )
+    }
+
+    if (seats === undefined) {
+        return <span>LOADING...</span>
     }
 
     return (
@@ -65,15 +85,23 @@ export const Session = ({ callbackName, name, callbackCpf, cpf, fn1 }) => {
                 <div className="all">
                     {seats.map(seat => {
                         return <Seat
+                            key={seats.id}
                             available={seat.isAvailable}
                             fn={() => {
                                 if (!seat.isAvailable) { return '' }
-                                if (!selecteds.includes(seat.id)) {
-                                    setSelecteds([...selecteds, seat.id])
-                                    setNumberSelected([...numberSelected, seat.name])
+
+                                if (!seatsId.includes(seat.id)) {
+                                    setSeatSelected({
+                                        ...seatSelected,
+                                        seatsId: [...seatsId, seat.id],
+                                        seatsName: [...seatsName, seat.name]
+                                    })
                                 } else {
-                                    setSelecteds([...selecteds].filter(sel => sel !== seat.id))
-                                    setNumberSelected([...numberSelected].filter(el => el !== seat.name))
+                                    setSeatSelected({
+                                        ...seatSelected,
+                                        seatsId: [...seatsId].filter(el => el !== seat.id),
+                                        seatsName: [...seatsName].filter(el => el !== seat.name)
+                                    })
                                 }
                             }}
                             name={seat.name}
@@ -82,24 +110,25 @@ export const Session = ({ callbackName, name, callbackCpf, cpf, fn1 }) => {
                 </div>
             </Seats>
             <form onSubmit={finish}>
-                <label for="name" >Nome do Comprador:</label>
+                <label htmlFor="name" >Nome do Comprador:</label>
                 <input
                     type='text'
                     name='name'
                     id='name'
                     placeholder='Digite seu nome...'
                     required
-                    onChange={callbackName}
+                    onChange={(e) => setUser({ ...user, name: e.target.value })}
                     value={name}
                 />
-                <label for="cpf" >CPF do comprador:</label>
+                <label htmlFor="cpf" >CPF do comprador:</label>
                 <input
                     type='number'
+                    min='0'
                     name='cpf'
                     id='cpf'
                     placeholder='Digite seu CPF...'
                     required
-                    onChange={callbackCpf}
+                    onChange={(e) => setUser({ ...user, cpf: e.target.value })}
                     value={cpf}
                 />
                 <button type="submit">Reservar assento(s)</button>
@@ -107,7 +136,7 @@ export const Session = ({ callbackName, name, callbackCpf, cpf, fn1 }) => {
             <Footer>
                 <img src={infos.posterURL} alt={infos.title} />
                 <span>{infos.title}</span>
-                <span>{weekday.weekday} - {time}</span>
+                <span>{day.weekday} - {time}</span>
             </Footer>
         </>
     )

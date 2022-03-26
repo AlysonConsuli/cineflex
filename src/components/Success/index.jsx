@@ -1,21 +1,24 @@
 import { useLocation, Link } from "react-router-dom"
 import { LastPage } from "./style"
 
-export const Success = ({ name, cpf, global }) => {
-    console.log(name)
-    console.log(cpf)
-    console.log(global)
+export const Success = () => {
     const navigate = useLocation();
-    console.log(navigate.state)
+    const {state} = navigate
+    console.log(state)
+
     return (
         <LastPage>
-            <h1>Success</h1>
+            <h1>Pedido feito com sucesso!</h1>
             <h2>Filme e sessão</h2>
+            <span>{state.title}</span>
+            <span>{state.date} {state.time}</span>
 
             <h2>Ingressos</h2>
-            {global.seat.map(x => <div>{x}</div>)}
+            {state.seats.map(el => <span>Assento {el}</span>)}
 
             <h2>Comprador</h2>
+            <span>{state.name}</span>
+            <span>{state.cpf}</span>
 
             <Link to="/">
                 <button>Voltar pra Home</button>
