@@ -12,6 +12,12 @@ left: 0;
 top: 0;
 z-index: 1;
 
+img{
+    position: absolute;
+    left: 20px;
+    cursor: pointer;
+}
+
 span{
     font-size: 34px;
     color: #E8833A;

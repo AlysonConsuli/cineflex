@@ -14,7 +14,7 @@ export const Success = () => {
             <span>{state.date} {state.time}</span>
 
             <h2>Ingressos</h2>
-            {state.seats.map(el => <span>Assento {el}</span>)}
+            {state.seats.map(el => <span key={el}>Assento {el}</span>)}
 
             <h2>Comprador</h2>
             <span>Nome: {state.name}</span>

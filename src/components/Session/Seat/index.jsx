@@ -1,12 +1,13 @@
 import { useState } from "react"
 import { Circle } from "./style"
 
-export const Seat = ({ available, fn, name }) => {
+export const Seat = ({ key, available, fn, name }) => {
 
     const [selected, setSelected] = useState(false)
 
     return (
         <Circle
+            key={key}
             available={available}
             onClick={() => {
                 fn()
