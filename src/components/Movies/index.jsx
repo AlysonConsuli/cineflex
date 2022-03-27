@@ -1,4 +1,4 @@
-import { Movie } from './style'
+import { $Movies } from './style'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
@@ -21,18 +21,20 @@ export const Movies = () => {
     }, [])
 
     return (
-        <Movie >
+        <$Movies>
             <h1>Selecione o filme</h1>
-
-            {movies.map(movie => {
-                return (
-                    <Link to={`/sessoes/${movie.id}`} key={movie.id} >
-                        <img src={movie.posterURL} alt={movie.title} />
-                    </Link>
-                )
-            })
-            }
-
-        </Movie>
+            <main>
+                {movies.map(movie => {
+                    return (
+                        <Link to={`/sessoes/${movie.id}`} key={movie.id} >
+                            <div>
+                                <img src={movie.posterURL} alt={movie.title} />
+                            </div>
+                        </Link>
+                    )
+                })
+                }
+            </main>
+        </$Movies>
     )
 }

@@ -4,7 +4,7 @@ import { Circle } from "./style"
 export const Seat = ({ available, fn, name }) => {
 
     const [selected, setSelected] = useState(false)
-    
+
     return (
         <Circle
             available={available}
@@ -14,7 +14,9 @@ export const Seat = ({ available, fn, name }) => {
             }}
             selected={selected}
         >
-            <span>{name}</span>
+            <span>
+                {name.length === 1 ? `0${name}` : name}
+            </span>
         </Circle>
     )
 }

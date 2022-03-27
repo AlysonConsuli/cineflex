@@ -1,4 +1,4 @@
-import { MovieTime } from './style'
+import { MovieTime, Times } from './style'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
@@ -20,7 +20,7 @@ export const Time = () => {
         })
     }, [])
 
-    if(movie.days === undefined){
+    if (movie.days === undefined) {
         return <span>LOADING...</span>
     }
 
@@ -29,21 +29,25 @@ export const Time = () => {
             <h1>Selecione o horário</h1>
             {movie.days.map(time => {
                 return (
-                    <div key={time.id}>
+                    <Times key={time.id}>
                         <span>{time.weekday} - {time.date}</span>
-                        {time.showtimes.map(num => {
-                            return (
-                                <Link to={`/assentos/${num.id}`} key={num.id} >
-                                    <button>{num.name}</button>
-                                </Link>
-                            )
-                        })
-                        }
-                    </div>
+                        <div>
+                            {time.showtimes.map(num => {
+                                return (
+                                    <Link to={`/assentos/${num.id}`} key={num.id} >
+                                        <button>{num.name}</button>
+                                    </Link>
+                                )
+                            })
+                            }
+                        </div>
+                    </Times>
                 )
             })}
             <footer>
-                <img src={movie.posterURL} alt={movie.title} />
+                <div>
+                    <img src={movie.posterURL} alt={movie.title} />
+                </div>
                 <span>{movie.title}</span>
             </footer>
         </MovieTime>

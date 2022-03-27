@@ -1,4 +1,4 @@
-import { Footer, Seats } from "./style"
+import { Footer, Seats, Main, Example } from "./style"
 import { useNavigate, useParams } from "react-router-dom"
 import axios from "axios"
 import { useEffect, useState } from "react"
@@ -41,21 +41,21 @@ export const Session = () => {
     function finish(e) {
         e.preventDefault()
 
-        if(seatsId.length === 0){
+        if (seatsId.length === 0) {
             alert('Escolha algum assento')
             return ''
         }
-        if(cpf.length !== 11){
+        if (cpf.length !== 11) {
             alert('Insira o cpf corretamente')
             return ''
         }
 
         const promise = axios.post('https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many',
-        {
-            ids: seatsId,
-            name: name,
-            cpf: cpf
-        })
+            {
+                ids: seatsId,
+                name: name,
+                cpf: cpf
+            })
         promise.then(response => console.log(response.data))
         promise.catch(err => console.log(err.response))
 
@@ -79,36 +79,48 @@ export const Session = () => {
     }
 
     return (
-        <>
+        <Main>
+            <h1>Selecione o(s) assento(s)</h1>
             <Seats >
-                <h1>Selecione o(s) assento(s)</h1>
-                <div className="all">
-                    {seats.map(seat => {
-                        return <Seat
-                            key={seats.id}
-                            available={seat.isAvailable}
-                            fn={() => {
-                                if (!seat.isAvailable) { return '' }
+                {seats.map(seat => {
+                    return <Seat
+                        key={seats.id}
+                        available={seat.isAvailable}
+                        fn={() => {
+                            if (!seat.isAvailable) { return '' }
 
-                                if (!seatsId.includes(seat.id)) {
-                                    setSeatSelected({
-                                        ...seatSelected,
-                                        seatsId: [...seatsId, seat.id],
-                                        seatsName: [...seatsName, seat.name]
-                                    })
-                                } else {
-                                    setSeatSelected({
-                                        ...seatSelected,
-                                        seatsId: [...seatsId].filter(el => el !== seat.id),
-                                        seatsName: [...seatsName].filter(el => el !== seat.name)
-                                    })
-                                }
-                            }}
-                            name={seat.name}
-                        />
-                    })}
-                </div>
+                            if (!seatsId.includes(seat.id)) {
+                                setSeatSelected({
+                                    ...seatSelected,
+                                    seatsId: [...seatsId, seat.id],
+                                    seatsName: [...seatsName, seat.name]
+                                })
+                            } else {
+                                setSeatSelected({
+                                    ...seatSelected,
+                                    seatsId: [...seatsId].filter(el => el !== seat.id),
+                                    seatsName: [...seatsName].filter(el => el !== seat.name)
+                                })
+                            }
+                        }}
+                        name={seat.name}
+                    />
+                })}
             </Seats>
+            <Example>
+                <div>
+                    <div></div>
+                    <span>Selecionado</span>
+                </div>
+                <div>
+                    <div></div>
+                    <span>Disponível</span>
+                </div>
+                <div>
+                    <div></div>
+                    <span>Indisponível</span>
+                </div>
+            </Example>
             <form onSubmit={finish}>
                 <label htmlFor="name" >Nome do Comprador:</label>
                 <input
@@ -134,10 +146,14 @@ export const Session = () => {
                 <button type="submit">Reservar assento(s)</button>
             </form>
             <Footer>
-                <img src={infos.posterURL} alt={infos.title} />
-                <span>{infos.title}</span>
-                <span>{day.weekday} - {time}</span>
+                <div>
+                    <img src={infos.posterURL} alt={infos.title} />
+                </div>
+                <div>
+                    <span>{infos.title}</span>
+                    <span>{day.weekday} - {time}</span>
+                </div>
             </Footer>
-        </>
+        </Main>
     )
 }

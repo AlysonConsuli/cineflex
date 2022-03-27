@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Header } from './components/Header'
 import { Movies } from './components/Movies'
 import { Session } from './components/Session'
 import { Success } from './components/Success'
@@ -10,10 +11,11 @@ export const App = () => {
         <>
             <GlobalStyle />
             <BrowserRouter >
+                <Header />
                 <Routes >
                     <Route path='/' element={<Movies />} />
                     <Route path='/sessoes/:movieId' element={<Time />} />
-                    <Route path='/assentos/:sessionId' element={<Session />}/>
+                    <Route path='/assentos/:sessionId' element={<Session />} />
                     <Route path='/sucesso' element={<Success />} />
                 </Routes>
             </BrowserRouter>
