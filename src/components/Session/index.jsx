@@ -3,11 +3,14 @@ import { useNavigate, useParams } from "react-router-dom"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Seat } from "./Seat"
+import loading from "../../assets/loading.svg"
+import { cpfMask } from "../../services/cpfMask"
+import { Loading } from "../Movies/style"
 
 export const Session = () => {
 
     const [movie, setMovie] = useState({})
-    const { day, movie: infos, name: time, seats } = movie
+    const { id, day, movie: infos, name: time, seats } = movie
 
     const [user, setUser] = useState({
         name: '',
@@ -41,41 +44,44 @@ export const Session = () => {
     function finish(e) {
         e.preventDefault()
 
-        if (seatsId.length === 0) {
-            alert('Escolha algum assento')
-            return ''
-        }
-        if (cpf.length !== 11) {
-            alert('Insira o cpf corretamente')
-            return ''
-        }
+        if (seatsId.length === 0) { return alert('Escolha algum assento') }
+        if (cpf.length !== 14) { return alert('Insira o cpf corretamente') }
 
         const promise = axios.post('https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many',
             {
                 ids: seatsId,
                 name: name,
-                cpf: cpf
+                cpf: cpf.replace(/[^0-9]/g, '')
             })
-        promise.then(response => console.log(response.data))
-        promise.catch(err => console.log(err.response))
-
-        navigate(
-            '/sucesso',
-            {
-                state: {
-                    title: infos.title,
-                    date: day.date,
-                    time: time,
-                    seats: seatsName,
-                    name: name,
-                    cpf: cpf
+        promise.then(response => {
+            console.log(response)
+            navigate(
+                '/sucesso',
+                {
+                    state: {
+                        title: infos.title,
+                        date: day.date,
+                        time: time,
+                        seats: seatsName,
+                        name: name,
+                        cpf: cpf
+                    }
                 }
-            }
-        )
+            )
+        })
+        promise.catch(err => {
+            console.log(err.response)
+            alert('Algum desses assentos já foram reservados')
+            navigate(`/assentos/${id}`)
+        })
     }
 
     if (seats === undefined) {
-        return <span>LOADING...</span>
+        return (
+            <Loading>
+                <img src={loading} alt='loading' />
+            </Loading>
+        )
     }
 
     return (
@@ -134,13 +140,16 @@ export const Session = () => {
                 />
                 <label htmlFor="cpf" >CPF do comprador:</label>
                 <input
-                    type='number'
-                    min='0'
+                    type='text'
                     name='cpf'
                     id='cpf'
                     placeholder='Digite seu CPF...'
                     required
-                    onChange={(e) => setUser({ ...user, cpf: e.target.value })}
+                    maxLength='14'
+                    autoComplete='off'
+                    onChange={(e) => {
+                        setUser({ ...user, cpf: cpfMask(e.target.value) })
+                    }}
                     value={cpf}
                 />
                 <button type="submit">Reservar assento(s)</button>

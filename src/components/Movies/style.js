@@ -34,3 +34,12 @@ export const $Movies = styled.div`
         }
     }
 `
+
+export const Loading = styled.div`
+position: absolute;
+left: calc(50% - 75px);
+top: calc(50% - 108px);
+img{
+    width: 150px;
+}
+`

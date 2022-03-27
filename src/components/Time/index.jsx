@@ -2,6 +2,8 @@ import { MovieTime, Times } from './style'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { Loading } from '../Movies/style'
+import loading from '../../assets/loading.svg'
 
 export const Time = () => {
     const [movie, setMovie] = useState({})
@@ -21,7 +23,11 @@ export const Time = () => {
     }, [])
 
     if (movie.days === undefined) {
-        return <span>LOADING...</span>
+        return (
+            <Loading>
+                <img src={loading} alt='loading' />
+            </Loading>
+        )
     }
 
     return (

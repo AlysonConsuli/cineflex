@@ -1,7 +1,8 @@
-import { $Movies } from './style'
+import { $Movies, Loading } from './style'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import loading from "../../assets/loading.svg"
 
 export const Movies = () => {
 
@@ -19,6 +20,14 @@ export const Movies = () => {
             console.log(err.response)
         })
     }, [])
+
+    if(movies.length === 0){
+        return (
+            <Loading>
+                <img src={loading} alt='loading' />
+            </Loading>
+        )
+    }
 
     return (
         <$Movies>

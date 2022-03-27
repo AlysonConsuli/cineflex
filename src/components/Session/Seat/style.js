@@ -15,6 +15,7 @@ export const Circle = styled.div`
     border-color: ${props => !props.available && '#F7C52B'};
     border-color: ${props => props.available && !props.selected && '#808F9D'};
     border-color: ${props => props.available && props.selected && '#45BDB0'};
+    cursor: ${props => props.available ? 'pointer' : 'default'};
 
     span{
         font-size: 11px;
