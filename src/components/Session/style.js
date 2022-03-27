@@ -7,6 +7,55 @@ export const Main = styled.main`
         text-align: center;
         color: #293845;
     }
+
+    form{
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        max-width: 327px;
+        margin-top: 42px;
+    }
+
+    label{
+        font-size: 18px;
+        color: #293845;
+        margin-bottom: 3px;
+    }
+
+    input{
+        max-width: 327px;
+        height: 51px;
+        border: 1px solid #D5D5D5;
+        border-radius: 3px;
+        margin-bottom: 10px;
+        padding-left: 18px;
+        ::placeholder{
+            font-size: 18px;
+            font-style: italic;
+            color: #AFAFAF;
+        }
+    }
+
+    button{
+        width: 225px;
+        height: 43px;
+        background-color: #E8833A;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Roboto';
+        font-weight: 400;
+        font-size: 18px;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        margin: 47px auto 20px auto;
+    }
+
+    a{
+        text-decoration: none;
+    }
 `
 
 export const Seats = styled.div`
@@ -14,8 +63,8 @@ export const Seats = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 7px;
-    width: 327px;
-    height: 251px;
+    max-width: 327px;
+    min-height: 251px;
 `
 
 export const Footer = styled.footer`
@@ -59,20 +108,40 @@ export const Footer = styled.footer`
 export const Example = styled.div`
 display: flex;
 justify-content: space-evenly;
+max-width: 327px;
+margin: 0 auto;
 
 div{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+
+    span{
+        font-size: 13px;
+        color: #4E5A65;
+    }
 
     div{
         width: 24px;
         height: 24px;
         border-radius: 50%;
-        background-color: black;
-        border: 1px solid black;
     }
 }
+`
+
+export const Selected = styled.div`
+background-color: #8DD7CF;
+border: 1px solid #45BDB0;
+`
+
+export const Available = styled.div`
+background-color: #C3CFD9;
+border: 1px solid #808F9D;
+`
+
+export const NotAvailable = styled.div`
+background-color: #FBE192;
+border: 1px solid #F7C52B;
 `

@@ -2,8 +2,8 @@ import { useLocation, Link } from "react-router-dom"
 import { LastPage } from "./style"
 
 export const Success = () => {
-    const navigate = useLocation();
-    const {state} = navigate
+    const location = useLocation();
+    const {state} = location
     console.log(state)
 
     return (
@@ -17,8 +17,8 @@ export const Success = () => {
             {state.seats.map(el => <span>Assento {el}</span>)}
 
             <h2>Comprador</h2>
-            <span>{state.name}</span>
-            <span>{state.cpf}</span>
+            <span>Nome: {state.name}</span>
+            <span>CPF: {state.cpf}</span>
 
             <Link to="/">
                 <button>Voltar pra Home</button>

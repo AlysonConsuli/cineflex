@@ -1,4 +1,4 @@
-import { Footer, Seats, Main, Example } from "./style"
+import { Footer, Seats, Main, Example, Selected, Available, NotAvailable } from "./style"
 import { useNavigate, useParams } from "react-router-dom"
 import axios from "axios"
 import { useEffect, useState } from "react"
@@ -87,7 +87,7 @@ export const Session = () => {
                         key={seats.id}
                         available={seat.isAvailable}
                         fn={() => {
-                            if (!seat.isAvailable) { return '' }
+                            if (!seat.isAvailable) { return alert('Esse assento não está disponível') }
 
                             if (!seatsId.includes(seat.id)) {
                                 setSeatSelected({
@@ -109,15 +109,15 @@ export const Session = () => {
             </Seats>
             <Example>
                 <div>
-                    <div></div>
+                    <Selected></Selected>
                     <span>Selecionado</span>
                 </div>
                 <div>
-                    <div></div>
+                    <Available></Available>
                     <span>Disponível</span>
                 </div>
                 <div>
-                    <div></div>
+                    <NotAvailable></NotAvailable>
                     <span>Indisponível</span>
                 </div>
             </Example>
